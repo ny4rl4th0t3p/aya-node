@@ -1,12 +1,13 @@
-use std::{collections::BTreeMap, str::FromStr};
+use std::collections::BTreeMap;
 
+use fp_evm::GenesisAccount;
 use hex_literal::hex;
 use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 // Substrate
 use sc_chain_spec::{ChainType, Properties};
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_consensus_grandpa::AuthorityId as GrandpaId;
-use sp_core::{H160, Pair, Public, U256};
+use sp_core::{H160, Pair, Public};
 use sp_core::crypto::Ss58Codec;
 #[allow(unused_imports)]
 use sp_core::ecdsa;
@@ -192,18 +193,18 @@ fn testnet_genesis(
     enable_manual_seal: bool,
 ) -> serde_json::Value {
     let evm_accounts = {
-        let mut map = BTreeMap::new();
-        map.insert(
-            // H160 address for benchmark usage
-            H160::from_str("1000000000000000000000000000000000000001")
-                .expect("internal H160 is valid; qed"),
-            fp_evm::GenesisAccount {
-                nonce: U256::from(1),
-                balance: U256::from(1_000_000_000_000_000_000_000_000u128),
-                storage: Default::default(),
-                code: vec![0x00],
-            },
-        );
+        let mut map: BTreeMap<H160, GenesisAccount> = BTreeMap::new();
+        // map.insert(
+        //     // H160 address for benchmark usage
+        //     H160::from_str("1000000000000000000000000000000000000001")
+        //         .expect("internal H160 is valid; qed"),
+        //     fp_evm::GenesisAccount {
+        //         nonce: U256::from(1),
+        //         balance: U256::from(1_000_000_000_000_000_000_000_000u128),
+        //         storage: Default::default(),
+        //         code: vec![0x00],
+        //     },
+        // );
         map
     };
 
